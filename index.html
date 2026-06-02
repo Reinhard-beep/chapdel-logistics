@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chapdel Logistics – Dar es Salaam & Kibaha</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#00b140"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Chapdel"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png"/>
+  <meta name="description" content="Fast bodaboda rides and parcel delivery in Dar es Salaam and Kibaha, Tanzania"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green: #00b140;
+      --green-dark: #008f32;
+      --green-light: #e6f9ed;
+      --black: #0d0d0d;
+      --gray: #f5f5f5;
+      --text: #333;
+      --white: #fff;
+      --shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .logo { font-family:'Poppins',sans-serif; font-weight:900; font-size:1.4rem; color:var(--green); letter-spacing:-0.5px; }
+    .logo span { color: var(--black); }
+    .nav-links { display:flex; gap:28px; list-style:none; }
+    .nav-links a { text-decoration:none; color:var(--text); font-size:0.92rem; font-weight:500; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--green); }
+    .nav-cta { background:var(--green); color:#fff; padding:9px 22px; border-radius:50px; font-weight:600; font-size:0.9rem; text-decoration:none; transition:background 0.2s; }
+    .nav-cta:hover { background:var(--green-dark); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+    .hamburger span { width:26px; height:2.5px; background:var(--black); border-radius:2px; transition:0.3s; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #001a0a 0%, #003d1a 50%, #006629 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 100px 5% 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content:'';
+      position:absolute; inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300b140' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-content { position:relative; z-index:1; max-width:700px; }
+    .hero-badge { display:inline-block; background:rgba(0,177,64,0.2); color:#6dffaa; border:1px solid rgba(0,177,64,0.3); padding:6px 18px; border-radius:50px; font-size:0.82rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:24px; }
+    .hero h1 { font-family:'Poppins',sans-serif; font-weight:900; font-size:clamp(2.2rem,6vw,4rem); color:#fff; line-height:1.1; margin-bottom:20px; }
+    .hero h1 span { color:#00e65b; }
+    .hero p { color:rgba(255,255,255,0.75); font-size:1.1rem; line-height:1.7; margin-bottom:36px; max-width:560px; margin-left:auto; margin-right:auto; }
+    .hero-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .btn-primary { background:var(--green); color:#fff; padding:14px 32px; border-radius:50px; font-weight:700; font-size:1rem; text-decoration:none; transition:all 0.2s; box-shadow:0 4px 20px rgba(0,177,64,0.4); }
+    .btn-primary:hover { background:#00d44e; transform:translateY(-2px); }
+    .btn-outline { background:transparent; color:#fff; padding:14px 32px; border-radius:50px; font-weight:600; font-size:1rem; text-decoration:none; border:2px solid rgba(255,255,255,0.4); transition:all 0.2s; }
+    .btn-outline:hover { border-color:#fff; background:rgba(255,255,255,0.08); }
+    .hero-stats { display:flex; gap:40px; justify-content:center; margin-top:52px; flex-wrap:wrap; }
+    .stat { text-align:center; }
+    .stat-num { font-family:'Poppins',sans-serif; font-size:1.8rem; font-weight:900; color:#00e65b; }
+    .stat-label { color:rgba(255,255,255,0.6); font-size:0.82rem; margin-top:2px; }
+
+    /* SECTIONS */
+    section { padding: 80px 5%; }
+    .section-tag { display:inline-block; background:var(--green-light); color:var(--green-dark); font-size:0.78rem; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; padding:5px 14px; border-radius:50px; margin-bottom:14px; }
+    .section-title { font-family:'Poppins',sans-serif; font-weight:800; font-size:clamp(1.6rem,4vw,2.4rem); color:var(--black); margin-bottom:14px; line-height:1.2; }
+    .section-sub { color:#666; font-size:1rem; line-height:1.7; max-width:560px; }
+    .center { text-align:center; }
+    .center .section-sub { margin:0 auto; }
+
+    /* HOW IT WORKS */
+    .how { background:var(--gray); }
+    .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px; margin-top:48px; }
+    .step-card {
+      background:#fff; border-radius:20px; padding:32px 24px; text-align:center;
+      box-shadow:var(--shadow); transition:transform 0.2s;
+    }
+    .step-card:hover { transform:translateY(-6px); }
+    .step-icon { width:64px; height:64px; border-radius:16px; background:var(--green-light); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:1.8rem; }
+    .step-num { font-family:'Poppins',sans-serif; font-weight:900; font-size:2rem; color:var(--green); opacity:0.2; margin-bottom:6px; }
+    .step-card h3 { font-family:'Poppins',sans-serif; font-weight:700; font-size:1rem; margin-bottom:10px; }
+    .step-card p { color:#666; font-size:0.9rem; line-height:1.6; }
+
+    /* SERVICES */
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:48px; }
+    .service-card {
+      border-radius:20px; padding:36px 28px; color:#fff; position:relative; overflow:hidden; transition:transform 0.2s;
+    }
+    .service-card:hover { transform:translateY(-6px); }
+    .service-card.ride { background:linear-gradient(135deg,#00b140,#006629); }
+    .service-card.delivery { background:linear-gradient(135deg,#0066cc,#003d7a); }
+    .service-card.express { background:linear-gradient(135deg,#cc5500,#7a3300); }
+    .service-card::after { content:''; position:absolute; right:-20px; top:-20px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,0.08); }
+    .service-icon { font-size:2.5rem; margin-bottom:16px; }
+    .service-card h3 { font-family:'Poppins',sans-serif; font-weight:700; font-size:1.2rem; margin-bottom:10px; }
+    .service-card p { font-size:0.9rem; opacity:0.85; line-height:1.6; }
+    .service-card .badge { display:inline-block; background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:50px; font-size:0.75rem; font-weight:600; margin-top:16px; }
+
+    /* MAP SECTION */
+    .map-section { background:var(--black); color:#fff; }
+    .map-section .section-title { color:#fff; }
+    .map-section .section-sub { color:rgba(255,255,255,0.65); }
+    .map-wrapper {
+      margin-top:40px; border-radius:24px; overflow:hidden;
+      box-shadow:0 8px 48px rgba(0,0,0,0.4); height:420px; position:relative;
+    }
+    #map { width:100%; height:100%; }
+    .map-overlay {
+      position:absolute; top:16px; left:16px; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px);
+      color:#fff; padding:12px 18px; border-radius:14px; font-size:0.85rem;
+    }
+    .map-overlay strong { color:#00e65b; display:block; font-size:0.95rem; margin-bottom:4px; }
+    .coverage-tags { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+    .coverage-tag { background:rgba(0,177,64,0.15); border:1px solid rgba(0,177,64,0.3); color:#6dffaa; padding:6px 16px; border-radius:50px; font-size:0.82rem; font-weight:600; }
+
+    /* REGISTER SECTION */
+    .register { background: linear-gradient(135deg,#f0fff5,#e6f9ed); }
+    .register-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:48px; }
+    .register-card {
+      background:#fff; border-radius:24px; padding:40px 36px; box-shadow:var(--shadow);
+    }
+    .register-card h3 { font-family:'Poppins',sans-serif; font-weight:800; font-size:1.3rem; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+    .register-card .subtitle { color:#666; font-size:0.9rem; margin-bottom:28px; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; font-size:0.82rem; font-weight:600; color:#444; margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:12px 16px; border:1.5px solid #e0e0e0; border-radius:12px;
+      font-size:0.92rem; font-family:'Inter',sans-serif; outline:none; transition:border 0.2s;
+      background:#fafafa;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--green); background:#fff; }
+    .form-group textarea { height:90px; resize:none; }
+    .btn-submit {
+      width:100%; background:var(--green); color:#fff; border:none; padding:14px; border-radius:12px;
+      font-weight:700; font-size:1rem; cursor:pointer; font-family:'Poppins',sans-serif;
+      transition:background 0.2s, transform 0.1s; margin-top:6px;
+    }
+    .btn-submit:hover { background:var(--green-dark); transform:translateY(-1px); }
+    .form-note { font-size:0.78rem; color:#999; text-align:center; margin-top:12px; }
+
+    /* SUCCESS MESSAGE */
+    .success-msg {
+      display:none; background:#e6f9ed; border:1.5px solid var(--green); border-radius:12px;
+      padding:16px; text-align:center; color:var(--green-dark); font-weight:600; margin-top:14px;
+    }
+
+    /* WHY US */
+    .why-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:24px; margin-top:48px; }
+    .why-card { text-align:center; padding:28px 20px; }
+    .why-icon { font-size:2.2rem; margin-bottom:14px; }
+    .why-card h4 { font-family:'Poppins',sans-serif; font-weight:700; font-size:1rem; margin-bottom:8px; }
+    .why-card p { color:#666; font-size:0.88rem; line-height:1.6; }
+
+    /* TESTIMONIALS */
+    .testimonials { background:var(--gray); }
+    .testi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:48px; }
+    .testi-card { background:#fff; border-radius:20px; padding:28px; box-shadow:var(--shadow); }
+    .testi-card p { font-size:0.92rem; line-height:1.7; color:#444; font-style:italic; margin-bottom:18px; }
+    .testi-author { display:flex; align-items:center; gap:12px; }
+    .testi-avatar { width:44px; height:44px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:1rem; }
+    .testi-name { font-weight:600; font-size:0.9rem; }
+    .testi-role { font-size:0.78rem; color:#999; }
+    .stars { color:#f5a623; font-size:0.85rem; margin-bottom:4px; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background:linear-gradient(135deg,#00b140,#006629);
+      text-align:center; padding:80px 5%;
+    }
+    .cta-banner h2 { font-family:'Poppins',sans-serif; font-weight:900; font-size:clamp(1.8rem,4vw,2.8rem); color:#fff; margin-bottom:14px; }
+    .cta-banner p { color:rgba(255,255,255,0.8); font-size:1rem; margin-bottom:32px; }
+    .cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .btn-white { background:#fff; color:var(--green-dark); padding:14px 32px; border-radius:50px; font-weight:700; font-size:1rem; text-decoration:none; transition:all 0.2s; }
+    .btn-white:hover { background:#e6ffe9; transform:translateY(-2px); }
+    .btn-outline-white { background:transparent; color:#fff; padding:14px 32px; border-radius:50px; font-weight:600; font-size:1rem; text-decoration:none; border:2px solid rgba(255,255,255,0.5); transition:all 0.2s; }
+    .btn-outline-white:hover { background:rgba(255,255,255,0.1); border-color:#fff; }
+
+    /* FOOTER */
+    footer {
+      background:var(--black); color:rgba(255,255,255,0.6);
+      padding: 60px 5% 30px;
+    }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:48px; }
+    .footer-brand .logo { font-size:1.5rem; display:block; margin-bottom:14px; }
+    .footer-brand p { font-size:0.88rem; line-height:1.7; color:rgba(255,255,255,0.5); max-width:240px; }
+    .footer-social { display:flex; gap:10px; margin-top:20px; }
+    .social-btn { width:36px; height:36px; background:rgba(255,255,255,0.08); border-radius:8px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:0.9rem; transition:background 0.2s; }
+    .social-btn:hover { background:var(--green); }
+    .footer-col h5 { color:#fff; font-family:'Poppins',sans-serif; font-weight:700; font-size:0.92rem; margin-bottom:16px; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:10px; }
+    .footer-col ul li a { color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.88rem; transition:color 0.2s; }
+    .footer-col ul li a:hover { color:var(--green); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.08); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+    .footer-bottom p { font-size:0.82rem; }
+    .footer-bottom a { color:var(--green); text-decoration:none; }
+
+    /* MOBILE NAV MENU */
+    .mobile-menu {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.97); z-index:200;
+      flex-direction:column; align-items:center; justify-content:center; gap:28px;
+    }
+    .mobile-menu a { color:#fff; font-size:1.4rem; text-decoration:none; font-family:'Poppins',sans-serif; font-weight:700; }
+    .mobile-menu a:hover { color:var(--green); }
+    .mobile-close { position:absolute; top:24px; right:24px; background:none; border:none; color:#fff; font-size:1.8rem; cursor:pointer; }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .register-grid { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:640px) {
+      .nav-links, .nav-cta { display:none; }
+      .hamburger { display:flex; }
+      .footer-grid { grid-template-columns:1fr; }
+      .hero-stats { gap:24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PWA INSTALL BANNER Android -->
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:linear-gradient(135deg,#001a09,#003d1a);border-top:2px solid #00b140;padding:16px 20px;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -4px 24px rgba(0,177,64,0.3);">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div style="width:44px;height:44px;border-radius:10px;background:#00b140;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🛵</div>
+    <div>
+      <div style="color:#00e65b;font-weight:800;font-size:0.92rem;font-family:Poppins,sans-serif;">📲 Install Chapdel App</div>
+      <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">Bonyeza kuinstall kwenye simu — BURE!</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="installBtn" style="background:#00b140;color:#fff;border:none;padding:10px 18px;border-radius:50px;font-weight:700;font-size:0.85rem;cursor:pointer;">Install</button>
+    <button id="dismissInstall" style="background:rgba(255,255,255,0.1);color:#fff;border:none;padding:10px 14px;border-radius:50px;cursor:pointer;">✕</button>
+  </div>
+</div>
+<!-- PWA INSTALL BANNER iOS -->
+<div id="iosBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:linear-gradient(135deg,#001a09,#003d1a);border-top:2px solid #00b140;padding:16px 20px;align-items:center;gap:12px;box-shadow:0 -4px 24px rgba(0,177,64,0.3);">
+  <div style="flex:1;">
+    <div style="color:#00e65b;font-weight:800;font-size:0.92rem;font-family:Poppins,sans-serif;">📲 Install Chapdel kwenye iPhone</div>
+    <div style="color:rgba(255,255,255,0.7);font-size:0.8rem;margin-top:4px;line-height:1.5;">Bonyeza <strong style="color:#fff;">Share</strong> (⬆️) kisha chagua <strong style="color:#fff;">"Add to Home Screen"</strong></div>
+  </div>
+  <button onclick="document.getElementById('iosBanner').style.display='none'" style="background:rgba(255,255,255,0.1);color:#fff;border:none;padding:10px 14px;border-radius:50px;cursor:pointer;flex-shrink:0;">✕</button>
+</div>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobile()">✕</button>
+  <a href="#how" onclick="closeMobile()">How It Works</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#coverage" onclick="closeMobile()">Coverage</a>
+  <a href="#register" onclick="closeMobile()">Register</a>
+  <a href="#register" class="btn-primary" onclick="closeMobile()">Get Started</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><img src="logo.png" style="height:40px;width:40px;border-radius:50%;object-fit:cover;" alt="Chapdel Logo"/><span style="font-family:Poppins,sans-serif;font-weight:900;font-size:1.2rem;color:#00b140;">Chapdel<span style="color:#0d0d0d;">Logistics</span></span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#register">Register</a></li>
+  </ul>
+  <a href="#register" class="nav-cta">Get Started</a>
+  <div class="hamburger" onclick="openMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Now Live in Dar es Salaam & Kibaha</div>
+    <h1>Fast Rides & Parcel<br/><span>Delivery On Demand</span></h1>
+    <p>Connect with trusted bodaboda riders for quick transportation and same-day parcel delivery across Dar es Salaam and Kibaha. Safe, affordable, and reliable.</p>
+    <div class="hero-btns">
+      <a href="book.html" class="btn-primary">🛵 Book a Ride</a>
+      <a href="book.html" class="btn-outline">📦 Send a Parcel</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Riders Ready</div></div>
+      <div class="stat"><div class="stat-num">2 Cities</div><div class="stat-label">DSM & Kibaha</div></div>
+      <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Service</div></div>
+      <div class="stat"><div class="stat-num">5 Min</div><div class="stat-label">Avg Pickup</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="center">
+    <span class="section-tag">Simple Process</span>
+    <h2 class="section-title">How Chapdel Works</h2>
+    <p class="section-sub">Getting a ride or sending a parcel takes less than 2 minutes</p>
+  </div>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-icon">📝</div>
+      <div class="step-num">01</div>
+      <h3>Register Your Account</h3>
+      <p>Sign up as a customer or bodaboda rider. Quick and completely free — no fees to join.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">📍</div>
+      <div class="step-num">02</div>
+      <h3>Share Your Location</h3>
+      <p>Enter your pickup point and destination. Our system uses Google Maps to find the nearest rider.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">🛵</div>
+      <div class="step-num">03</div>
+      <h3>Rider is Matched</h3>
+      <p>A nearby verified bodaboda rider accepts your request and heads to your location instantly.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">✅</div>
+      <div class="step-num">04</div>
+      <h3>Ride or Receive Parcel</h3>
+      <p>Track your rider live on the map. Arrive safely or receive your delivery at your doorstep.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div style="max-width:1100px; margin:0 auto;">
+    <span class="section-tag">What We Offer</span>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Everything you need to move people and goods around the city</p>
+    <div class="services-grid">
+      <div class="service-card ride">
+        <div class="service-icon">🛵</div>
+        <h3>Bodaboda Rides</h3>
+        <p>Quick and affordable motorcycle rides across Dar es Salaam and Kibaha. Beat the traffic, arrive on time.</p>
+        <span class="badge">From TSh 500</span>
+      </div>
+      <div class="service-card delivery">
+        <div class="service-icon">📦</div>
+        <h3>Parcel Delivery</h3>
+        <p>Send documents, packages, or goods safely. Real-time tracking from pickup to delivery confirmation.</p>
+        <span class="badge">Same Day Delivery</span>
+      </div>
+      <div class="service-card express">
+        <div class="service-icon">⚡</div>
+        <h3>Express Courier</h3>
+        <p>Urgent items delivered within the hour. Priority service for businesses and time-sensitive parcels.</p>
+        <span class="badge">Within 1 Hour</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP / COVERAGE -->
+<section class="map-section" id="coverage">
+  <div class="center">
+    <span class="section-tag" style="background:rgba(0,177,64,0.15);color:#6dffaa;">📍 Coverage Area</span>
+    <h2 class="section-title">We Operate In</h2>
+    <p class="section-sub">Currently serving Dar es Salaam and Kibaha with rapid expansion planned</p>
+    <div class="coverage-tags" style="justify-content:center;">
+      <span class="coverage-tag">📍 Dar es Salaam</span>
+      <span class="coverage-tag">📍 Kibaha</span>
+      <span class="coverage-tag">📍 Kariakoo</span>
+      <span class="coverage-tag">📍 Ilala</span>
+      <span class="coverage-tag">📍 Kinondoni</span>
+      <span class="coverage-tag">📍 Temeke</span>
+      <span class="coverage-tag">📍 Ubungo</span>
+    </div>
+  </div>
+  <div class="map-wrapper">
+    <div id="map"></div>
+    <div class="map-overlay">
+      <strong>🟢 Live Coverage Area</strong>
+      Dar es Salaam & Kibaha, Tanzania
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section class="register" id="register">
+  <div class="center">
+    <span class="section-tag">Join Us Today</span>
+    <h2 class="section-title">Register Now — It's Free!</h2>
+    <p class="section-sub">Whether you need a ride or want to earn as a rider, sign up below</p>
+  </div>
+  <div class="register-grid" style="max-width:900px; margin:0 auto;">
+
+    <!-- CUSTOMER FORM -->
+    <div class="register-card">
+      <h3>🧑 Customer Registration</h3>
+      <p class="subtitle">Book rides & send parcels across DSM and Kibaha</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="c-name" placeholder="e.g. Amina Juma" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="c-phone" placeholder="+255 7XX XXX XXX" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="c-email" placeholder="amina@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Your Area / Mtaa</label>
+        <input type="text" id="c-area" placeholder="e.g. Kariakoo, Mbezi, Kibaha..." />
+      </div>
+      <div class="form-group">
+        <label>Service Needed</label>
+        <select id="c-service">
+          <option value="">-- Select Service --</option>
+          <option>Bodaboda Ride</option>
+          <option>Parcel Delivery</option>
+          <option>Express Courier</option>
+          <option>All Services</option>
+        </select>
+      </div>
+      <button class="btn-submit" onclick="submitForm('customer')">✅ Register as Customer</button>
+      <p class="form-note">100% free · No hidden charges</p>
+      <div class="success-msg" id="customer-success">🎉 Welcome! We'll contact you shortly on WhatsApp.</div>
+    </div>
+
+    <!-- RIDER FORM -->
+    <div class="register-card">
+      <h3>🛵 Bodaboda Rider Registration</h3>
+      <p class="subtitle">Start earning by joining our growing rider network</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="r-name" placeholder="e.g. Hassan Mwangi" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number (WhatsApp)</label>
+        <input type="tel" id="r-phone" placeholder="+255 7XX XXX XXX" />
+      </div>
+      <div class="form-group">
+        <label>Motorcycle Registration No.</label>
+        <input type="text" id="r-plate" placeholder="e.g. T123 ABC" />
+      </div>
+      <div class="form-group">
+        <label>Area You Operate In</label>
+        <input type="text" id="r-area" placeholder="e.g. Ubungo, Kibaha, Ilala..." />
+      </div>
+      <div class="form-group">
+        <label>Years of Riding Experience</label>
+        <select id="r-exp">
+          <option value="">-- Select --</option>
+          <option>Less than 1 year</option>
+          <option>1–3 years</option>
+          <option>3–5 years</option>
+          <option>5+ years</option>
+        </select>
+      </div>
+      <button class="btn-submit" onclick="submitForm('rider')" style="background:#0066cc;">✅ Join as a Rider</button>
+      <p class="form-note">Earn daily · Flexible hours · Free to join</p>
+      <div class="success-msg" id="rider-success">🎉 Great! Our team will call you within 24 hours.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY CHAPDEL -->
+<section id="why">
+  <div class="center">
+    <span class="section-tag">Why Choose Us</span>
+    <h2 class="section-title">The Chapdel Difference</h2>
+  </div>
+  <div class="why-grid" style="max-width:1000px; margin:0 auto;">
+    <div class="why-card">
+      <div class="why-icon">🔒</div>
+      <h4>Verified Riders</h4>
+      <p>All bodaboda riders are ID-verified and background checked before joining our platform.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📍</div>
+      <h4>GPS Tracking</h4>
+      <p>Track your rider or parcel in real-time using Google Maps. Always know where your delivery is.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💰</div>
+      <h4>Affordable Prices</h4>
+      <p>Fair and transparent pricing. No surge pricing surprises — what you see is what you pay.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">⚡</div>
+      <h4>Fast Pickup</h4>
+      <p>Average pickup time under 5 minutes. We connect you to the nearest available rider instantly.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📱</div>
+      <h4>WhatsApp Orders</h4>
+      <p>No app download needed. Book via WhatsApp or our website — simple and accessible to everyone.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🤝</div>
+      <h4>Local & Trusted</h4>
+      <p>100% locally owned. We understand Dar es Salaam and Kibaha because this is our home too.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="center">
+    <span class="section-tag">What People Say</span>
+    <h2 class="section-title">Trusted by the Community</h2>
+  </div>
+  <div class="testi-grid" style="max-width:1000px; margin:0 auto;">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p>"Nilipata boda haraka sana! Nilikuwa Kariakoo na nilifika Ubungo ndani ya dakika 20. Bei nzuri sana na dereva alikuwa friendly."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">FA</div>
+        <div><div class="testi-name">Fatuma Ally</div><div class="testi-role">Customer · Kariakoo, DSM</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p>"I sent a parcel from Kibaha to Ilala and it arrived in 45 minutes. The tracking on Google Maps was perfect. Will use again!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">JM</div>
+        <div><div class="testi-name">John Mwamba</div><div class="testi-role">Business Owner · Kibaha</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p>"Nimekuwa rider kwa miezi 3 na mapato yangu yameongezeka. Platform nzuri sana. Naweza kufanya kazi yangu kwa uhuru."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">HK</div>
+        <div><div class="testi-name">Hassan Kombo</div><div class="testi-role">Bodaboda Rider · Kinondoni</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Ready to Ride or Earn?</h2>
+  <p>Join hundreds of customers and riders already using Chapdel Logistics in Dar es Salaam and Kibaha</p>
+  <div class="cta-btns">
+    <a href="#register" class="btn-white">📝 Register Now — Free</a>
+    <a href="https://wa.me/255762503883?text=Habari!%20Ninataka%20kujua%20zaidi%20kuhusu%20Chapdel%20Logistics" target="_blank" class="btn-outline-white">💬 Chat on WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span style="display:flex;align-items:center;gap:8px;"><img src="logo.png" style="height:36px;width:36px;border-radius:50%;object-fit:cover;" alt="Chapdel Logo"/><span style="font-family:Poppins,sans-serif;font-weight:900;font-size:1.3rem;color:#00b140;">Chapdel<span style="color:#fff;">Logistics</span></span></span>
+      <p>Fast, reliable, and affordable bodaboda rides and parcel delivery across Dar es Salaam and Kibaha, Tanzania.</p>
+      <div class="footer-social">
+        <a class="social-btn" href="#" title="Facebook">f</a>
+        <a class="social-btn" href="#" title="Instagram">ig</a>
+        <a class="social-btn" href="https://wa.me/255762503883" target="_blank" title="WhatsApp">wa</a>
+        <a class="social-btn" href="#" title="Twitter/X">x</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Bodaboda Rides</a></li>
+        <li><a href="#services">Parcel Delivery</a></li>
+        <li><a href="#services">Express Courier</a></li>
+        <li><a href="#register">Business Delivery</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#why">Why Chapdel</a></li>
+        <li><a href="#register">Join as Rider</a></li>
+        <li><a href="#coverage">Coverage Area</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+255762503883">📞 +255 762 503 883</a></li>
+        <li><a href="mailto:info@chapdel.co.tz">✉️ info@chapdel.co.tz</a></li>
+        <li><a href="#">📍 Dar es Salaam, TZ</a></li>
+        <li><a href="https://wa.me/255762503883" target="_blank">💬 WhatsApp Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Chapdel Logistics. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    <p>Made with ❤️ in Tanzania 🇹🇿</p>
+  </div>
+</footer>
+
+<!-- GOOGLE MAPS -->
+<script>
+  function initMap() {
+    // Center on Dar es Salaam
+    const dsm = { lat: -6.7924, lng: 39.2083 };
+    const kibaha = { lat: -6.7784, lng: 38.9244 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 10,
+      center: { lat: -6.79, lng: 39.05 },
+      styles: [
+        { elementType:"geometry", stylers:[{color:"#1a1a2e"}] },
+        { elementType:"labels.text.stroke", stylers:[{color:"#1a1a2e"}] },
+        { elementType:"labels.text.fill", stylers:[{color:"#746855"}] },
+        { featureType:"road", elementType:"geometry", stylers:[{color:"#2d2d44"}] },
+        { featureType:"road", elementType:"geometry.stroke", stylers:[{color:"#1a1a2e"}] },
+        { featureType:"road", elementType:"labels.text.fill", stylers:[{color:"#9ca5b3"}] },
+        { featureType:"water", elementType:"geometry", stylers:[{color:"#0e2240"}] },
+        { featureType:"poi", elementType:"labels", stylers:[{visibility:"off"}] }
+      ]
+    });
+
+    // DSM Marker
+    new google.maps.Marker({
+      position: dsm, map,
+      title: "Dar es Salaam",
+      icon: { path: google.maps.SymbolPath.CIRCLE, scale: 14, fillColor:"#00b140", fillOpacity:1, strokeColor:"#fff", strokeWeight:3 }
+    });
+
+    // Kibaha Marker
+    new google.maps.Marker({
+      position: kibaha, map,
+      title: "Kibaha",
+      icon: { path: google.maps.SymbolPath.CIRCLE, scale: 10, fillColor:"#00e65b", fillOpacity:1, strokeColor:"#fff", strokeWeight:2 }
+    });
+
+    // Coverage circle - DSM
+    new google.maps.Circle({
+      strokeColor: "#00b140", strokeOpacity: 0.6, strokeWeight: 2,
+      fillColor: "#00b140", fillOpacity: 0.1,
+      map, center: dsm, radius: 20000
+    });
+
+    // Coverage circle - Kibaha
+    new google.maps.Circle({
+      strokeColor: "#00e65b", strokeOpacity: 0.5, strokeWeight: 2,
+      fillColor: "#00e65b", fillOpacity: 0.08,
+      map, center: kibaha, radius: 12000
+    });
+  }
+</script>
+<!-- REPLACE YOUR_API_KEY below with your Google Maps API Key -->
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
+
+<script>
+  // Mobile menu
+  function openMobile() { document.getElementById('mobileMenu').style.display='flex'; }
+  function closeMobile() { document.getElementById('mobileMenu').style.display='none'; }
+
+  // Form submit
+  function submitForm(type) {
+    if (type === 'customer') {
+      const name = document.getElementById('c-name').value;
+      const phone = document.getElementById('c-phone').value;
+      const area = document.getElementById('c-area').value;
+      if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+      document.getElementById('customer-success').style.display = 'block';
+      // WhatsApp redirect
+      const msg = `Hello Chapdel! I want to register as a Customer.%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AArea: ${encodeURIComponent(area)}`;
+      setTimeout(() => { window.open(`https://wa.me/255762503883?text=${msg}`, '_blank'); }, 1500);
+    } else {
+      const name = document.getElementById('r-name').value;
+      const phone = document.getElementById('r-phone').value;
+      const plate = document.getElementById('r-plate').value;
+      if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+      document.getElementById('rider-success').style.display = 'block';
+      const msg = `Hello Chapdel! I want to register as a Rider.%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0APlate: ${encodeURIComponent(plate)}`;
+      setTimeout(() => { window.open(`https://wa.me/255762503883?text=${msg}`, '_blank'); }, 1500);
+    }
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior:'smooth' }); }
+    });
+  });
+
+  // ===== PWA SERVICE WORKER =====
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('[Chapdel] SW registered:', reg.scope))
+        .catch(err => console.log('[Chapdel] SW error:', err));
+    });
+  }
+
+  // ===== PWA INSTALL BANNER =====
+  let deferredPrompt;
+  const installBanner = document.getElementById('installBanner');
+  const installBtn = document.getElementById('installBtn');
+  const dismissBtn = document.getElementById('dismissInstall');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => { if (installBanner) installBanner.style.display = 'flex'; }, 3000);
+  });
+
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        installBanner.style.display = 'none';
+      }
+    });
+  }
+  if (dismissBtn) { dismissBtn.addEventListener('click', () => { installBanner.style.display = 'none'; }); }
+
+  // iOS hint
+  const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+  if (isIOS && !window.navigator.standalone) {
+    setTimeout(() => { const b = document.getElementById('iosBanner'); if(b) b.style.display='flex'; }, 4000);
+  }
+</script>
+
+</body>
+</html>
