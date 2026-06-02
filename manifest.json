@@ -1,0 +1,44 @@
+{
+  "name": "Chapdel Logistics",
+  "short_name": "Chapdel",
+  "description": "Fast bodaboda rides and parcel delivery in Dar es Salaam & Kibaha, Tanzania",
+  "start_url": "/chapdel-/",
+  "display": "standalone",
+  "background_color": "#001a09",
+  "theme_color": "#00b140",
+  "orientation": "portrait",
+  "scope": "/chapdel-/",
+  "lang": "sw",
+  "categories": ["transportation", "logistics"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Book a Ride",
+      "short_name": "Ride",
+      "description": "Book a bodaboda ride now",
+      "url": "/chapdel-/#register",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Send Parcel",
+      "short_name": "Parcel",
+      "description": "Send a parcel now",
+      "url": "/chapdel-/#register",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
